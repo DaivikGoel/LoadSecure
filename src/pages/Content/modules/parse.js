@@ -1,4 +1,4 @@
-
+const { extractPhoneNumbers } = require("./vetting");
 
 function parse(list) {
   const text = list['undefined']
@@ -25,6 +25,39 @@ function parse(list) {
   console.log("Phone Number:", areaCode && phoneNumber ? `(${areaCode}) ${phoneNumber}` : '');
   console.log("MC Number:", mcNumber);
 
+  const parsedData = {
+    companyName: companyName,
+    phoneNumber: areaCode && phoneNumber ? `(${areaCode}) ${phoneNumber}` : '',
+    mcNumber: mcNumber
+  };
+
+  return parsedData;
+
 }
 
-module.exports = { parse };
+function splitSectionsByKeywords(text) {
+  const keywords = [
+    'TRIP',
+    'EQUIPMENT',
+    'COMMENTS',
+    'MINIMUM RATE',
+    'MARKET RATES',
+    'COMPANY VIEW IN DIRECTORY'
+  ];
+
+  const pattern = new RegExp(`\\b(?:${keywords.join('|')})\\b`, 'i');
+  const sections = text.split(pattern).map(section => section.trim());
+
+  const result = {};
+  for (let i = 1; i < sections.length; i++) {
+    if (i - 1 < keywords.length) {
+      result[keywords[i - 1]] = sections[i];
+    } else {
+      result.undefined = result.undefined ? result.undefined + sections[i] : sections[i];
+    }
+  }
+
+  return result;
+}
+
+module.exports = { parse, splitSectionsByKeywords };
