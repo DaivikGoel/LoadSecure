@@ -1,5 +1,7 @@
 export const StatusEnum = {
     OK: "✅",
     WARNING: "⚠️",
-    NO: "❌"
+    NO: "❌",
+    NOINFO: "ℹ️"
+
 };

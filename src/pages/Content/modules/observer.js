@@ -1,4 +1,4 @@
-import { parse, splitSectionsByKeywords } from './parse';
+import { parse, splitSectionsByKeywords, getMCData } from './parse';
 import { collectTextContent } from './extractor';
 import { postinfo } from './postinfo';
 
@@ -14,7 +14,7 @@ export const NodeObserver = new MutationObserver((mutationsList) => {
                     return;
                 }
                 if (node instanceof HTMLElement && node.classList.contains("row-cells")) {
-                    console.log("Simulating click on the row...");
+
                     node.click();
                 }
             }
@@ -29,7 +29,7 @@ NodeObserver.observe(document, { childList: true, subtree: true });
 function startProcess() {
 
     const rowContainers = document.querySelectorAll(".row-cells");
-    console.log("ROW CONTAINERS", rowContainers)
+
     if (rowContainers.length > 0) {
         processRow(rowContainers, 0);
     } else {
@@ -38,28 +38,31 @@ function startProcess() {
 }
 
 // Function to process each row container
-function processRow(rowContainers, index) {
+async function processRow(rowContainers, index) {
     if (index < rowContainers.length) {
         const rowContainer = rowContainers[index];
-        console.log("Simulating click on the row...");
+
         rowContainer.click();
-        console.log("ROW CONTAINER 1", rowContainer)
+
         // Add a timeout to wait for expanded content to fully load
-        setTimeout(() => {
+        setTimeout(async () => { // Make the function asynchronous
             const expandedContent = document.querySelector(".table-row-detail");
             if (expandedContent) {
                 // Collect text content from the expanded section
                 const extractedText = collectTextContent(expandedContent);
 
                 // Log the extracted text to the console
-                console.log('Extracted Text:', extractedText);
 
                 // Split sections by keywords
                 const sections = splitSectionsByKeywords(extractedText);
                 const parsedData = parse(sections);
 
+                // Get CarrierInfo asynchronously
+                const CarrierInfo = await getMCData(parsedData['mcNumber']);
+                console.log("CARRIER INFO", CarrierInfo);
+
                 // Post information for this row
-                postinfo(document, rowContainer, parsedData);
+                postinfo(document, rowContainer, parsedData, sections['COMMENTS'], CarrierInfo);
 
                 // Move to the next row container
                 processRow(rowContainers, index + 1);
@@ -75,4 +78,4 @@ function processRow(rowContainers, index) {
 }
 
 // Start the process
-setTimeout(() => { startProcess() }, 10000)
+setTimeout(() => { startProcess() }, 10000);

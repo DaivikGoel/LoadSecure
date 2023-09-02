@@ -1,5 +1,5 @@
 // Import any necessary modules here
-import { parse, splitSectionsByKeywords } from './modules/parse';
+
 import { vetMC } from './modules/vetting';
 import { NodeObserver } from './modules/observer';
 
