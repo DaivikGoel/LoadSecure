@@ -3,6 +3,7 @@ import { vetMC, CommentPhoneNumber, vetEmail, vetDriverInspections, vetTruckInsp
 export const postinfo = (document, node, parseData, Comments, CarrierInfo) => {
 
     const extractedDivElement = document.createElement("div");
+    extractedDivElement.classList.add("LoadSecureContainer");
 
     // Create the first row with a checkmark and text
     const MCResponse = vetMC(parseData['mcNumber']);

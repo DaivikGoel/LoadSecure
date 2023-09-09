@@ -71,7 +71,7 @@ export function splitSectionsByKeywords(text) {
 }
 
 export async function getMCData(mcNumber) {
-  if (!mcNumber || mcNumber.trim() === '') {
+  if (!mcNumber || mcNumber.trim() === '' || mcNumber === 0) {
     // Handle the case where MC number is missing or blank
     return null; // You can return an appropriate value, like null or an empty object
   }

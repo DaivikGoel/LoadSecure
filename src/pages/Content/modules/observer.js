@@ -1,6 +1,10 @@
+// Import your helper functions and libraries as needed
 import { parse, splitSectionsByKeywords, getMCData } from './parse';
 import { collectTextContent } from './extractor';
 import { postinfo } from './postinfo';
+
+// Create a Set to keep track of processed row containers
+const processedRowContainers = new Set();
 
 // Create a Mutation Observer instance
 export const NodeObserver = new MutationObserver((mutationsList) => {
@@ -14,8 +18,10 @@ export const NodeObserver = new MutationObserver((mutationsList) => {
                     return;
                 }
                 if (node instanceof HTMLElement && node.classList.contains("row-cells")) {
-
-                    node.click();
+                    // New row-cells element added, process it if not processed
+                    if (!processedRowContainers.has(node)) {
+                        node.click();
+                    }
                 }
             }
         }
@@ -27,11 +33,12 @@ NodeObserver.observe(document, { childList: true, subtree: true });
 
 // Function to start the process
 function startProcess() {
-
     const rowContainers = document.querySelectorAll(".row-cells");
 
     if (rowContainers.length > 0) {
-        processRow(rowContainers, 0);
+        // Filter out the unprocessed row containers
+        const unprocessedContainers = Array.from(rowContainers).filter((container) => !processedRowContainers.has(container));
+        processRow(unprocessedContainers, 0);
     } else {
         console.log("No row containers found.");
     }
@@ -41,6 +48,9 @@ function startProcess() {
 async function processRow(rowContainers, index) {
     if (index < rowContainers.length) {
         const rowContainer = rowContainers[index];
+
+        // Add the row container to the set of processed containers
+        processedRowContainers.add(rowContainer);
 
         rowContainer.click();
 
@@ -77,5 +87,8 @@ async function processRow(rowContainers, index) {
     }
 }
 
-// Start the process
-setTimeout(() => { startProcess() }, 10000);
+// Start the process initially
+//startProcess();
+
+// Run startProcess every 10 seconds
+setInterval(startProcess, 10000);
