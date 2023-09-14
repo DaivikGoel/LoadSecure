@@ -17,12 +17,6 @@ export const NodeObserver = new MutationObserver((mutationsList) => {
                     NodeObserver.disconnect(); // Stop observing once the script is found
                     return;
                 }
-                /*  if (node instanceof HTMLElement && node.classList.contains("row-cells")) {
-                     // New row-cells element added, process it if not processed
-                     if (!processedRowContainers.has(node) && !node.classList.contains("LoadSecureContainer")) {
-                         node.click();
-                     }
-                 } */
             }
         }
     }
@@ -47,7 +41,6 @@ function startProcess() {
     }
 }
 
-
 // Function to process each row container
 async function processRow(rowContainers, index) {
     if (index < rowContainers.length) {
@@ -56,11 +49,9 @@ async function processRow(rowContainers, index) {
         const ContainerKeyString = makeKeyStringMatch(extractText)
 
         // Check if the row container is already processed
-
         if (ContainerKeyString in processedRowContainers) {
             // Move to the next row container
             const extractedDivElement = processedRowContainers[ContainerKeyString]
-            console.log("ROW CONTAINER", rowContainer)
             if (extractedDivElement != null) {
                 AddRow(rowContainer, extractedDivElement)
             }
@@ -69,7 +60,6 @@ async function processRow(rowContainers, index) {
         }
         // Add the row container to the set of processed containers
         processedRowContainers[ContainerKeyString] = null
-        console.log("PROCESSED", processedRowContainers);
 
         rowContainer.click();
 
@@ -78,7 +68,6 @@ async function processRow(rowContainers, index) {
             // Wait until a div with class "city-spacing" containing "MC#" appears
             const waitForMCNumber = async () => {
                 const expandedContent = document.querySelector(".table-row-detail");
-                console.log("EXPAND", expandedContent)
                 if (expandedContent) {
                     const mcNumberElement = expandedContent.querySelector(".city-spacing");
                     if (mcNumberElement && mcNumberElement.textContent.includes("MC#")) {
@@ -87,7 +76,6 @@ async function processRow(rowContainers, index) {
                         const sections = splitSectionsByKeywords(extractedText);
                         const parsedData = parse(sections);
                         const CarrierInfo = await getMCData(parsedData['mcNumber']);
-                        console.log("CARRIER INFO", CarrierInfo);
                         const newLoadContainer = postinfo(document, rowContainer, parsedData, sections['COMMENTS'], CarrierInfo);
                         processedRowContainers[ContainerKeyString] = newLoadContainer
                         processRow(rowContainers, index + 1);
@@ -112,22 +100,33 @@ async function processRow(rowContainers, index) {
 
 // Create a refresh button element
 const refreshButton = document.createElement('button');
-refreshButton.textContent = 'Click to See Information'; // Set the button text
+refreshButton.innerHTML = '🔄'; // Refresh emoji
 refreshButton.style.position = 'fixed'; // Set the position to fixed for floating
 refreshButton.style.bottom = '20px'; // Adjust the button's position as needed
 refreshButton.style.right = '20px'; // Adjust the button's position as needed
 refreshButton.style.zIndex = '9999'; // Ensure it's above other elements
 refreshButton.style.cursor = 'pointer'; // Set the cursor style
 
-// Append the button to the document body
-document.body.appendChild(refreshButton);
+// Apply styles to make it a blue circle with animation
+refreshButton.style.width = '50px'; // Adjust the size as needed
+refreshButton.style.height = '50px'; // Adjust the size as needed
+refreshButton.style.backgroundColor = 'blue'; // Set the background color to blue
+refreshButton.style.borderRadius = '50%'; // Make it a circle
+refreshButton.style.transition = 'transform 0.3s ease-in-out'; // Smooth transform animation
 
 // Add a click event listener to the refresh button
 refreshButton.addEventListener('click', () => {
-    console.log("REFRESHING")
-    // Call the startProcess function to refresh the content
-    startProcess();
+    // Add a simple rotation animation on click
+    refreshButton.style.transform = 'rotate(360deg)';
+    setTimeout(() => {
+        refreshButton.style.transform = 'rotate(0deg)';
+        // Call the startProcess function to refresh the content here
+        startProcess();
+    }, 300); // Adjust the animation duration as needed
 });
+
+// Append the button to the document body
+document.body.appendChild(refreshButton);
 
 // Start the process initially
 //startProcess();
