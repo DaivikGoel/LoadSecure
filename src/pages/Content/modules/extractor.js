@@ -9,6 +9,21 @@ export function collectTextContent(node) {
     return content;
 }
 
+export function makeKeyStringMatch(extractedText) {
+
+
+    const pattern = /\d+[a-z\s–-]+([\s\S]+)/;
+    const match = extractedText.match(pattern);
+
+    if (match) {
+        const extractedInfo = match[1].trim();
+        return extractedInfo
+    } else {
+        console.log("String does not match the expected format.");
+        return match
+    }
+
+}
 export function extractPhoneNumbers(text) {
 
     const phoneNumberPattern = /\b\d{3}[-\s]?\d{3}[-\s]?\d{4}\b/g;

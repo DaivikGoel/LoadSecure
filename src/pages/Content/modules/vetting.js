@@ -8,6 +8,13 @@ const newOrOldMC = (mcNumber) => {
 
         parseInt(mcNumber)
 
+        if (mcNumber == 0) {
+            return {
+                status: StatusEnum.NO,
+                message: "MC Number is 0, which "
+            }
+        }
+
         // Check if MC number is greater than 1200000
         if (mcNumber > 1500000) {
             return {
@@ -18,7 +25,7 @@ const newOrOldMC = (mcNumber) => {
         } else if (mcNumber > 1200000) {
             return {
                 status: StatusEnum.WARNING,
-                message: "The carrier is not that old, but still exercise caution "
+                message: "The carrier is not that new, but still exercise caution "
             }
             //show triangle with exclamation mark
         }
@@ -51,25 +58,25 @@ export const CommentPhoneNumber = (phonenumber, comment) => {
     if (extractedPhoneNumberFromComment == null || extractedPhoneNumberFromComment == "") {
         return {
             status: StatusEnum.OK,
-            message: "There is no number in the comments"
+            message: "There is no phone number in the comments"
         }
     }
     else if (extractedPhoneNumberFromComment == phonenumber) {
         return {
             status: StatusEnum.OK,
-            message: "The number in the comment matches the number in the comment"
+            message: "The phoner number in the comment matches the phone number in the comment"
         }
     }
     else if (extractedPhoneNumberFromComment && (phonenumber == null || phonenumber == "")) {
         return {
             status: StatusEnum.WARNING,
-            message: "There is no official number from DOT, but a number is given in the comments"
+            message: "There is no official phone number from DOT, but a number is given in the comments"
         }
     }
     else if (extractedPhoneNumberFromComment != phonenumber) {
         return {
             status: StatusEnum.NO,
-            message: "The number in the comment does not match the official number!"
+            message: "The phone number in the comment does not match the official number!"
         }
     }
 
@@ -151,7 +158,7 @@ export const vetEmail = (email, comment) => {
 
 
 export const vetDriverInspections = (CarrierInfo) => {
-    if (!CarrierInfo) {
+    if (!CarrierInfo || CarrierInfo == null) {
         return {
             status: StatusEnum.NO,
             message: "No carrier information available"
@@ -164,28 +171,28 @@ export const vetDriverInspections = (CarrierInfo) => {
     if (DriverOosRatetoNationalAverage < 1.5) {
         return {
             status: StatusEnum.NO,
-            message: "The driver out of service rate is very high and almost above the national average"
+            message: "The driver out of service rate is very high relative to the national average "
         };
     }
 
     if (DriverToInspectionRatio < 0.4) {
         return {
             status: StatusEnum.NO,
-            message: "There have significantly fewer inspections per year compared to the drivers operating"
+            message: "There have significantly fewer inspections per year compared to the drivers operating "
         };
     }
 
     if (DriverToInspectionRatio > 0.4 && DriverToInspectionRatio < 0.5) {
         return {
             status: StatusEnum.WARNING,
-            message: "The Driver to Inspection Ratio is almost equal but be careful"
+            message: "The Driver to Inspection Ratio is almost equal but be careful "
         };
     }
 
     if (DriverToInspectionRatio >= 0.5) {
         return {
             status: StatusEnum.OK,
-            message: "The Driver to Inspections Ratio is higher than 1 to 1"
+            message: "The Driver to Inspections Ratio is higher than 1 to 1 "
         };
     }
     return {
@@ -195,7 +202,7 @@ export const vetDriverInspections = (CarrierInfo) => {
 };
 
 export const vetTruckInspections = (CarrierInfo) => {
-    if (!CarrierInfo) {
+    if (!CarrierInfo || CarrierInfo == null) {
         return {
             status: StatusEnum.NO,
             message: "No carrier information available"
@@ -208,28 +215,28 @@ export const vetTruckInspections = (CarrierInfo) => {
     if (TruckOosRatetoNationalAverage < 1.5) {
         return {
             status: StatusEnum.NO,
-            message: "The truck out of service rate is very high and almost above the national average"
+            message: "The truck out of service rate is very high relative to the national average "
         };
     }
 
     if (TruckToInspectionRatio < 0.4) {
         return {
             status: StatusEnum.NO,
-            message: "There have significantly fewer inspections per year compared to the trucks operating"
+            message: "There have significantly fewer inspections per year compared to the trucks operating "
         };
     }
 
     if (TruckToInspectionRatio > 0.4 && TruckToInspectionRatio < 0.5) {
         return {
             status: StatusEnum.WARNING,
-            message: "The Truck to Inspection Ratio is almost equal but be careful"
+            message: "The Truck to Inspection Ratio is almost equal but be careful "
         };
     }
 
     if (TruckToInspectionRatio >= 0.5) {
         return {
             status: StatusEnum.OK,
-            message: "The Truck to Inspections Ratio is higher than 1 to 1"
+            message: "The Truck to Inspections Ratio is higher than 1 to 1 "
         };
     }
     return {
@@ -241,7 +248,7 @@ export const vetTruckInspections = (CarrierInfo) => {
 
 export const vetPOBox = (CarrierInfo) => {
 
-    if (!CarrierInfo) {
+    if (!CarrierInfo || CarrierInfo == null) {
         return {
             status: StatusEnum.NO,
             message: "No carrier information available"
@@ -257,4 +264,26 @@ export const vetPOBox = (CarrierInfo) => {
     else {
         return null
     }
+};
+
+export const DriverAndTruckers = (CarrierInfo) => {
+
+
+    if (!CarrierInfo || CarrierInfo == null) {
+        return {
+            status: StatusEnum.NO,
+            message: "No carrier information available"
+        }
+    }
+    else {
+        const Drivers = CarrierInfo.totalDrivers;
+        const Trucks = CarrierInfo.totalPowerUnits;
+        return {
+            status: StatusEnum.BLANK,
+            message: "Total Drivers = " + Drivers + " Total Trucks = " + Trucks
+
+        }
+    }
+
+
 };

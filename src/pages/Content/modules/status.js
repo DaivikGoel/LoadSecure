@@ -2,6 +2,7 @@ export const StatusEnum = {
     OK: "✅",
     WARNING: "⚠️",
     NO: "❌",
-    NOINFO: "ℹ️"
+    NOINFO: "ℹ️",
+    BLANK: ""
 
 };

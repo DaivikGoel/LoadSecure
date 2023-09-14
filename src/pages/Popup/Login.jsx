@@ -8,6 +8,7 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     // Add your login logic here
+
     console.log('Email:', email);
     console.log('Password:', password);
   };
@@ -15,7 +16,7 @@ const Login = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Login</h1>
+        <h1>Login - Work In Progress</h1>
         <form onSubmit={handleLogin}>
           <div className="form-group">
             <label>Email:</label>

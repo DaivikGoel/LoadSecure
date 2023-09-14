@@ -1,4 +1,4 @@
-import { vetMC, CommentPhoneNumber, vetEmail, vetDriverInspections, vetTruckInspections, vetPOBox } from "./vetting";
+import { vetMC, CommentPhoneNumber, vetEmail, vetDriverInspections, vetTruckInspections, vetPOBox, DriverAndTruckers } from "./vetting";
 
 export const postinfo = (document, node, parseData, Comments, CarrierInfo) => {
 
@@ -8,44 +8,56 @@ export const postinfo = (document, node, parseData, Comments, CarrierInfo) => {
     // Create the first row with a checkmark and text
     const MCResponse = vetMC(parseData['mcNumber']);
     if (MCResponse) {
-        const firstRow = createRow(MCResponse.status, "MC Number " + MCResponse.message);
-        extractedDivElement.appendChild(firstRow);
+        const MCResponseRow = createRow(MCResponse.status, MCResponse.message);
+        extractedDivElement.appendChild(MCResponseRow);
     }
 
     // Create the second row with a checkmark and text
     const CommentResponse = CommentPhoneNumber(parseData.phoneNumber, Comments);
     if (CommentResponse) {
-        const secondRow = createRow(CommentResponse.status, CommentResponse.message);
-        extractedDivElement.appendChild(secondRow);
+        const CommentResponseRow = createRow(CommentResponse.status, CommentResponse.message);
+        extractedDivElement.appendChild(CommentResponseRow);
     }
 
     const EmailResponse = vetEmail(parseData.emailAddress, Comments);
     if (EmailResponse) {
-        const ThirdRow = createRow(EmailResponse.status, EmailResponse.message);
-        extractedDivElement.appendChild(ThirdRow);
+        const EmailResponseRow = createRow(EmailResponse.status, EmailResponse.message);
+        extractedDivElement.appendChild(EmailResponseRow);
+    }
+    const DriversandTruckersResponse = DriverAndTruckers(CarrierInfo);
+    if (DriversandTruckersResponse) {
+        const DriversAndTruckersRow = createRow(DriversandTruckersResponse.status, DriversandTruckersResponse.message);
+        extractedDivElement.appendChild(DriversAndTruckersRow);
     }
 
     const DriverInspectionResponse = vetDriverInspections(CarrierInfo);
     if (DriverInspectionResponse) {
-        const FourthRow = createRow(DriverInspectionResponse.status, DriverInspectionResponse.message);
-        extractedDivElement.appendChild(FourthRow);
+        const DriverInspectionResponseRow = createRow(DriverInspectionResponse.status, DriverInspectionResponse.message);
+        extractedDivElement.appendChild(DriverInspectionResponseRow);
     }
 
     const TruckInspectionResponse = vetTruckInspections(CarrierInfo);
     if (TruckInspectionResponse) {
-        const FifthRow = createRow(TruckInspectionResponse.status, TruckInspectionResponse.message);
-        extractedDivElement.appendChild(FifthRow);
+        const TruckInspectionResponseRow = createRow(TruckInspectionResponse.status, TruckInspectionResponse.message);
+        extractedDivElement.appendChild(TruckInspectionResponseRow);
     }
 
     const POBoxResponse = vetPOBox(CarrierInfo);
     if (POBoxResponse) {
-        const FifthRow = createRow(POBoxResponse.status, POBoxResponse.message);
-        extractedDivElement.appendChild(FifthRow);
+        const POBoxResponseRow = createRow(POBoxResponse.status, POBoxResponse.message);
+        extractedDivElement.appendChild(POBoxResponseRow);
     }
 
 
 
+
     // Insert the <div> element as a sibling of the current container
+    //node.parentNode.insertBefore(extractedDivElement, node.nextSibling);
+    AddRow(node, extractedDivElement)
+    return extractedDivElement
+}
+
+export const AddRow = (node, extractedDivElement) => {
     node.parentNode.insertBefore(extractedDivElement, node.nextSibling);
 }
 

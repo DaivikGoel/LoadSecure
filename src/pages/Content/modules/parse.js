@@ -4,7 +4,6 @@ import { apiurl } from "../../../environment/config";
 export function parse(list) {
   const text = list['undefined'];
 
-
   // Regular expressions for matching company name, phone number, email address, and MC number
   const companyNameRegex = /^(.*?)\s+\(/;
   const phoneNumberRegex = /\((\d{3})\) (\d{3}-\d{4})/;
@@ -24,9 +23,9 @@ export function parse(list) {
   const emailMatches = text.match(emailRegex);
   const emailAddress = emailMatches ? emailMatches[0] : '';
 
-  // Extract MC number
+  // Extract MC number and remove spaces
   const mcNumberMatches = text.match(mcNumberRegex);
-  const mcNumber = mcNumberMatches ? mcNumberMatches[1] : '';
+  const mcNumber = mcNumberMatches ? parseInt(mcNumberMatches[1].replace(/\s/g, '')) : 0;
 
   console.log("Company Name:", companyName);
   console.log("Phone Number:", areaCode && phoneNumber ? `${areaCode}${phoneNumber}` : '');
@@ -71,7 +70,8 @@ export function splitSectionsByKeywords(text) {
 }
 
 export async function getMCData(mcNumber) {
-  if (!mcNumber || mcNumber.trim() === '' || mcNumber === 0) {
+
+  if (!mcNumber || mcNumber === 0) {
     // Handle the case where MC number is missing or blank
     return null; // You can return an appropriate value, like null or an empty object
   }
