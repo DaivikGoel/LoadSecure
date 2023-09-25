@@ -1,5 +1,5 @@
 const { extractPhoneNumbers } = require("./extractor");
-import { apiurl } from "../../../environment/config";
+import { apiurl } from "../../../../environment/config";
 
 export function parse(list) {
   const text = list['undefined'];
