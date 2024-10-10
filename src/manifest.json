@@ -1,15 +1,13 @@
 {
   "manifest_version": 3,
-  "name": "LoadSecure",
-  "description": "A chrome extension boilerplate built with React 17, Webpack 5, and Webpack Dev Server 4",
+  "name": "Superstar Chrome Extension",
+  "description": "A Chrome Extension for the Influencer Marketing Platform Superstar",
   "options_page": "options.html",
-  "permissions": [
+  "background": { "service_worker": "background.bundle.js" },
+"permissions": [
     "scripting",
     "activeTab"
   ],
-  "background": {
-    "service_worker": "background.bundle.js"
-  },
   "action": {
     "default_popup": "popup.html",
     "default_icon": "icon-34.png"
@@ -20,7 +18,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://one.dat.com/*"
+        "<all_urls>"
       ],
       "js": [
         "contentScript.bundle.js"

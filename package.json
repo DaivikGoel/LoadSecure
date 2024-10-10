@@ -1,7 +1,7 @@
 {
-  "name": "LoadSecure",
+  "name": "Superstar Chrome Extension",
   "version": "1.0.0",
-  "description": "A chrome extension to vet load boards",
+  "description": "A Chrome Extension for the Influencer Marketing Platform Superstar",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -13,7 +13,8 @@
     "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,json,css,scss,md}'"
   },
   "dependencies": {
-    "libphonenumber-js": "^1.10.43",
+    "axios": "^1.7.7",
+    "json-bigint": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
