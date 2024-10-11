@@ -1,13 +1,15 @@
 import { getCreatorProfile } from './helpers/getCreator';
-import ApiClient from '../../../lib/api/apiclient';
 
 export const exportCreator = (CreatorURL) => {
   const creatorUsername = getCreatorProfile(CreatorURL);
+  const platform = getPlatform(CreatorURL);
 
   chrome.runtime.sendMessage(
     {
       action: 'setCurrentCreator',
       currentCreator: creatorUsername,
+      currentCreatorURL: CreatorURL,
+      currentCreatorPlatform: platform,
     },
     (response) => {
       if (chrome.runtime.lastError) {
@@ -24,9 +26,14 @@ export const exportCreator = (CreatorURL) => {
   return creatorUsername;
 };
 
-export const importBusinessCreatorList = (id) => {
-  console.log('TRYING');
-  ApiClient.get(`/v1/businesses/${id}/creators/metrics`).then((res) => {
-    console.log('CREATORS', res);
-  });
+const getPlatform = (CreatorURL) => {
+  if (CreatorURL.includes('youtube.com')) {
+    return 'YouTube';
+  } else if (CreatorURL.includes('tiktok.com')) {
+    return 'TikTok';
+  } else if (CreatorURL.includes('instagram.com')) {
+    return 'Instagram';
+  } else {
+    return null;
+  }
 };
