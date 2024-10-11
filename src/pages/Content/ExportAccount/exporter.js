@@ -1,19 +1,30 @@
-import secrets from 'secrets';
-
 import { getCreatorProfile } from './helpers/getCreator';
 import ApiClient from '../../../lib/api/apiclient';
 
 export const exportCreator = (CreatorURL) => {
-  const userid = 1; // Replace with the actual user ID if needed
-
   const creatorUsername = getCreatorProfile(CreatorURL);
-  console.log(creatorUsername);
-  console.log(secrets.API_URL);
 
-  importCreatorList('bus_14mxSRqShXADSfSVfys3uT');
+  chrome.runtime.sendMessage(
+    {
+      action: 'setCurrentCreator',
+      currentCreator: creatorUsername,
+    },
+    (response) => {
+      if (chrome.runtime.lastError) {
+        console.log(
+          'Failed to send message:',
+          chrome.runtime.lastError.message
+        );
+      } else {
+        console.log('Message sent successfully:', response);
+      }
+    }
+  );
+
+  return creatorUsername;
 };
 
-export const importCreatorList = (id) => {
+export const importBusinessCreatorList = (id) => {
   console.log('TRYING');
   ApiClient.get(`/v1/businesses/${id}/creators/metrics`).then((res) => {
     console.log('CREATORS', res);

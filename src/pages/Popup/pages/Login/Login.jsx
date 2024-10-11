@@ -2,31 +2,45 @@ import React, { useState } from 'react';
 import logo from '../../../../assets/img/logo.svg';
 import './Login.css';
 import ApiClient from '../../../../lib/api/apiclient';
-import { importCreatorList } from '../../../Content/ExportAccount/exporter';
 import { useAuth } from '../../../../lib/auth/AuthContextProvider';
+import { useGlobalState } from '../../../../lib/state/GlobalStateProvider';
+import { fetchCreators } from '../../helpers/fetchcreators';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const { login } = useAuth();
+  const { selectedBusiness, setSelectedBusiness, setBusinessCreators } = useGlobalState();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null);
 
     try {
-      const response = await ApiClient.post('/v1/users/login', {
+      const loginResponse = await ApiClient.post('/v1/users/login', {
         email,
         password,
       });
-      console.log('Login response:', response.data);
-      login(response.data.token); // Assuming the API returns a token
+      console.log('Login response:', loginResponse.data);
+      
+      const profileResponse = await ApiClient.get('/v1/users/profile');
+      console.log('Profile response:', profileResponse.data);
+      
+      // Call login function with token and user data
+      login(loginResponse.data.token, profileResponse.data);
+      
+      // Set the selected business to the primary business of the user
+      setSelectedBusiness(profileResponse.data.primaryBusiness);
+      
+      // Fetch creators for the selected business
+      const creators = await fetchCreators(profileResponse.data.primaryBusiness.id);
+      setBusinessCreators(creators);
+      
       console.log('Login successful!');
-      importCreatorList('bus_rRFgg9Kom3uRfDjX4EVKGW');
     } catch (error) {
       if (error.response) {
-        console.log(error.response)
+        console.log(error.response);
         setError(error.response.data.message);
       } else {
         setError('An error occurred. Please try again later.');
