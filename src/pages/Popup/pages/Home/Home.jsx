@@ -4,12 +4,14 @@ import { useGlobalState } from '../../../../lib/state/GlobalStateProvider';
 import { useAuth } from '../../../../lib/auth/AuthContextProvider';
 import { fetchCreators } from '../../helpers/fetchcreators';
 import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
+import { Dialog, DialogContent, DialogTitle } from '@radix-ui/react-dialog';
 
 const Home = () => {
-
   const { currentCreator, currentCreatorPlatform, selectedBusiness, businessCreators, setBusinessCreators, setSelectedBusiness } = useGlobalState();
   const { user } = useAuth();
   const [selectedCreator, setSelectedCreator] = useState(null);
+  const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
+  const [platformToOverwrite, setPlatformToOverwrite] = useState(null);
 
   useEffect(() => {
     if (selectedBusiness === null && user) {
@@ -25,23 +27,53 @@ const Home = () => {
   const handleCreatorChange = (e) => {
     const creatorId = e.target.value;
     setSelectedCreator(businessCreators.find(creator => creator.id === creatorId) || null);
-    // You might want to update the currentCreator in your global state here as well
     console.log("Selected Creator:", creatorId);
+  };
+
+  const handleAddClick = () => {
+    if (selectedCreator && currentCreator && currentCreatorPlatform) {
+      const platformHandle = `${currentCreatorPlatform.toLowerCase()}Handle`;
+      if (selectedCreator[platformHandle]) {
+        setPlatformToOverwrite(currentCreatorPlatform);
+        setIsConfirmationDialogOpen(true);
+      } else {
+        addSocialHandle();
+      }
+    } else {
+      alert("Please select a creator and ensure there's a current creator and platform.");
+    }
+  };
+
+  const addSocialHandle = () => {
+    // Call your API to add the social handle
+    console.log('Calling API to add social handle');
+    // Add your API call here
+  };
+
+  const handleConfirmationDialogClose = () => {
+    setIsConfirmationDialogOpen(false);
+    setPlatformToOverwrite(null);
+  };
+
+  const handleConfirmationDialogConfirm = () => {
+    // Call your API to overwrite the existing handle
+    console.log('Calling API to overwrite existing handle');
+    // Add your API call here
+    setIsConfirmationDialogOpen(false);
+    setPlatformToOverwrite(null);
   };
 
   return (
     <div className="wave-container">
       {user && <h2>Welcome {user.firstName}!</h2>}
       {currentCreator && (
-        <>
-          <h2>Current Creator: 
+        <h2>
+          Current Creator: 
           {currentCreatorPlatform === 'Instagram' && <FaInstagram className="ml-2" />}
-            {currentCreatorPlatform === 'Youtube' && <FaYoutube className="ml-2" />}
-            {currentCreatorPlatform === 'TikTok' && <FaTiktok className="ml-2" />}
-            {currentCreator}
-
-          </h2>
-        </>
+          {currentCreatorPlatform === 'Youtube' && <FaYoutube className="ml-2" />}
+          {currentCreatorPlatform === 'TikTok' && <FaTiktok className="ml-2" />}
+          {currentCreator}
+        </h2>
       )}
       {businessCreators && (
         <>
@@ -61,7 +93,19 @@ const Home = () => {
             </div>
           )}
           <p>Add social to existing creator</p>
-          <button>Add</button>
+          <button onClick={handleAddClick}>Add</button>
+          {isConfirmationDialogOpen && (
+            <Dialog open={isConfirmationDialogOpen} onOpenChange={handleConfirmationDialogClose}>
+              <DialogTitle>Overwrite Existing Handle?</DialogTitle>
+              <DialogContent>
+                Are you sure you want to overwrite the existing {platformToOverwrite} handle for this creator?
+              </DialogContent>
+              <div className="dialog-footer">
+                <button onClick={handleConfirmationDialogClose}>Cancel</button>
+                <button onClick={handleConfirmationDialogConfirm}>Confirm</button>
+              </div>
+            </Dialog>
+          )}
         </>
       )}
     </div>
