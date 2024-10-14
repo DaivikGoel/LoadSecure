@@ -130,83 +130,64 @@ const Home = () => {
       setIsAddingNewCreator(false);
     }
   };
+  const getPlatformIcon = () => {
+    switch(currentCreatorPlatform) {
+      case 'Instagram':
+        return <FaInstagram />;
+      case 'Youtube':
+        return <FaYoutube />;
+      case 'TikTok':
+        return <FaTiktok />;
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className="wave-container">
-      {user && <h2>Welcome {user.firstName}!</h2>}
-      {currentCreator && (
-        <h2>
-          Current Creator: 
-          {currentCreatorPlatform === 'Instagram' && <FaInstagram className="ml-2" />}
-          {currentCreatorPlatform === 'Youtube' && <FaYoutube className="ml-2" />}
-          {currentCreatorPlatform === 'TikTok' && <FaTiktok className="ml-2" />}
-          {currentCreator}
-        </h2>
-      )}
-      {businessCreators && (
-        <>
-          <select value={selectedCreator ? selectedCreator.id : ''} onChange={handleCreatorChange}>
-            <option value="">Select a Creator</option>
-            {businessCreators.sort((a, b) => a.legalName.localeCompare(b.legalName)).map((creator) => (
-              <option key={creator.id} value={creator.id}>
-                {creator.legalName}
-              </option>
-            ))}
-          </select>
-          {selectedCreator && (
-            <div className="social-icons">
-              {selectedCreator.instagramHandle && <FaInstagram className="ml-2" />}
-              {selectedCreator.youtubeHandle && <FaYoutube className="ml-2" />}
-              {selectedCreator.tiktokHandle && <FaTiktok className="ml-2" />}
+    <div className="home-container">
+    <h1>Welcome {user.firstName} </h1>
+    <h2>Creator</h2>
+    <div className="creator-info">
+      <span className="creator-name">{currentCreator}</span>
+      
+      <span className="creator-platform">{getPlatformIcon()}{currentCreatorPlatform} </span>
+    </div>
+    <div className="card">
+      <h3>Add to already existing creator</h3>
+      <select onChange={handleCreatorChange} value={selectedCreator ? selectedCreator.id : ''}>
+        <option value="">Select a Creator</option>
+        {businessCreators && businessCreators.sort((a, b) => a.legalName.localeCompare(b.legalName)).map((creator) => (
+          <option key={creator.id} value={creator.id}>{creator.legalName}</option>
+        ))}
+      </select>
+      <button onClick={handleAddClick} className="action-button">Add</button>
+    </div>
+    <div className="card">
+      <h3>Create a new creator</h3>
+      <input
+        type="text"
+        placeholder="Name"
+        value={newCreatorName}
+        onChange={(e) => setNewCreatorName(e.target.value)}
+      />
+      <button onClick={handleAddNewCreator} className="action-button" disabled={isAddingNewCreator}>
+        {isAddingNewCreator ? 'Creating...' : 'Create'}
+      </button>
+    </div>
+      {isConfirmationDialogOpen && (
+        <Dialog open={isConfirmationDialogOpen} onOpenChange={() => setIsConfirmationDialogOpen(false)}>
+          <DialogOverlay className="dialog-overlay" />
+          <DialogContent className="dialog-content">
+            <DialogTitle className="dialog-title">Overwrite Existing Handle?</DialogTitle>
+            <div className="dialog-message">
+              Are you sure you want to overwrite the existing {platformToOverwrite} handle for this creator?
             </div>
-          )}
-          <p>Add social to existing creator</p>
-          <button onClick={handleAddClick}>Add</button>
-          
-          <div className="mt-4">
-            <h3>Add New Creator</h3>
-            <input 
-              type="text" 
-              value={newCreatorName} 
-              onChange={(e) => setNewCreatorName(e.target.value)} 
-              placeholder="Enter new creator name"
-              className="border p-2 mr-2"
-            />
-            <button 
-              onClick={handleAddNewCreator} 
-              disabled={isAddingNewCreator}
-              className="bg-blue-500 text-white p-2 rounded"
-            >
-              {isAddingNewCreator ? 'Adding...' : 'Add New Creator'}
-            </button>
-          </div>
-
-          {isConfirmationDialogOpen && (
-            <Dialog open={isConfirmationDialogOpen} onOpenChange={() => setIsConfirmationDialogOpen(false)}>
-              <DialogOverlay className="fixed inset-0 bg-black bg-opacity-50" />
-              <DialogContent className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-6 rounded-lg shadow-lg z-50">
-                <DialogTitle className="text-lg font-bold mb-4">Overwrite Existing Handle?</DialogTitle>
-                <div className="mb-4">
-                  Are you sure you want to overwrite the existing {platformToOverwrite} handle for this creator?
-                </div>
-                <div className="dialog-footer flex justify-end space-x-4">
-                  <button 
-                    onClick={handleConfirmationDialogClose}
-                    className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-                  >
-                    Cancel
-                  </button>
-                  <button 
-                    onClick={handleConfirmationDialogConfirm}
-                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                  >
-                    Confirm
-                  </button> 
-                </div>
-              </DialogContent>
-            </Dialog>
-          )}
-        </>
+            <div className="dialog-actions">
+              <button onClick={handleConfirmationDialogClose} className="dialog-button">Cancel</button>
+              <button onClick={handleConfirmationDialogConfirm} className="dialog-button dialog-button-confirm">Confirm</button>
+            </div>
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   );
