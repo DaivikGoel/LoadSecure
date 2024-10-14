@@ -6,6 +6,9 @@ import { fetchCreators } from '../../helpers/fetchcreators';
 import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
 import { Dialog, DialogContent, DialogTitle, DialogOverlay } from '@radix-ui/react-dialog';
 import ApiClient from '../../../../lib/api/apiclient';
+import wordmark from '../../../../assets/img/wordmark.png';
+import CreateCreator from '../Onboard/CreateCreator';
+import Button from '../../../../components/common/basics/button';
 
 const Home = () => {
   const { currentCreator, currentCreatorPlatform, selectedBusiness, businessCreators, setBusinessCreators, setSelectedBusiness, currentCreatorURL } = useGlobalState();
@@ -13,8 +16,7 @@ const Home = () => {
   const [selectedCreator, setSelectedCreator] = useState(null);
   const [isConfirmationDialogOpen, setIsConfirmationDialogOpen] = useState(false);
   const [platformToOverwrite, setPlatformToOverwrite] = useState(null);
-  const [newCreatorName, setNewCreatorName] = useState('');
-  const [isAddingNewCreator, setIsAddingNewCreator] = useState(false);
+  const [showCreateCreator, setShowCreateCreator] = useState(false);
 
   useEffect(() => {
     if (selectedBusiness === null && user) {
@@ -25,7 +27,7 @@ const Home = () => {
         setBusinessCreators(creators);
       });
     }
-  }, [selectedBusiness, businessCreators, user]);
+  }, [selectedBusiness, businessCreators, user, setSelectedBusiness, setBusinessCreators]);
 
   const handleCreatorChange = (e) => {
     const creatorId = e.target.value;
@@ -102,34 +104,6 @@ const Home = () => {
     setPlatformToOverwrite(null);
   };
 
-  const handleAddNewCreator = async () => {
-    if (!newCreatorName || !currentCreatorPlatform || !currentCreatorURL) {
-      alert("Please enter a creator name and ensure there's a current creator and platform.");
-      return;
-    }
-    setIsAddingNewCreator(true);
-    try {
-      const response = await ApiClient.post(`v1/businesses/${selectedBusiness.id}/addCreator`, {
-        legalName: newCreatorName,
-        [`${currentCreatorPlatform.toLowerCase()}Handle`]: currentCreatorURL,
-      });
-      if (response.status === 200) {
-        console.log('New creator added successfully');
-        const newCreator = response.data;
-        setBusinessCreators(prevCreators => [...prevCreators, newCreator]);
-        setNewCreatorName('');
-        alert('New creator added successfully!');
-      } else {
-        console.error('Error adding new creator:', response.data.message);
-        alert('Error adding new creator. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error adding new creator:', error.message);
-      alert('An error occurred while adding the new creator.');
-    } finally {
-      setIsAddingNewCreator(false);
-    }
-  };
   const getPlatformIcon = () => {
     switch(currentCreatorPlatform) {
       case 'Instagram':
@@ -143,37 +117,30 @@ const Home = () => {
     }
   };
 
+  if (showCreateCreator) {
+    return <CreateCreator onBack={() => setShowCreateCreator(false)} />;
+  }
+
   return (
     <div className="home-container">
-    <h1>Welcome {user.firstName} </h1>
-    <h2>Creator</h2>
-    <div className="creator-info">
-      <span className="creator-name">{currentCreator}</span>
-      
-      <span className="creator-platform">{getPlatformIcon()}{currentCreatorPlatform} </span>
-    </div>
-    <div className="card">
-      <h3>Add to already existing creator</h3>
-      <select onChange={handleCreatorChange} value={selectedCreator ? selectedCreator.id : ''}>
-        <option value="">Select a Creator</option>
-        {businessCreators && businessCreators.sort((a, b) => a.legalName.localeCompare(b.legalName)).map((creator) => (
-          <option key={creator.id} value={creator.id}>{creator.legalName}</option>
-        ))}
-      </select>
-      <button onClick={handleAddClick} className="action-button">Add</button>
-    </div>
-    <div className="card">
-      <h3>Create a new creator</h3>
-      <input
-        type="text"
-        placeholder="Name"
-        value={newCreatorName}
-        onChange={(e) => setNewCreatorName(e.target.value)}
-      />
-      <button onClick={handleAddNewCreator} className="action-button" disabled={isAddingNewCreator}>
-        {isAddingNewCreator ? 'Creating...' : 'Create'}
-      </button>
-    </div>
+      <img src={wordmark} alt="Wordmark" style={{ width: '60%', marginBottom: '10px' }} />
+      <h1>Welcome {user.firstName}</h1>
+      <h2>Creator</h2>
+      <div className="creator-info">
+        <span className="creator-name">{getPlatformIcon()}{currentCreator}</span>
+        <span className="creator-platform">{currentCreatorPlatform}</span>
+      </div>
+      <div className="card">
+        <h3>Add to an existing creator</h3>
+        <select onChange={handleCreatorChange} value={selectedCreator ? selectedCreator.id : ''}>
+          <option value="">Select a Creator</option>
+          {businessCreators && businessCreators.sort((a, b) => a.legalName.localeCompare(b.legalName)).map((creator) => (
+            <option key={creator.id} value={creator.id}>{creator.legalName}</option>
+          ))}
+        </select>
+        <Button onClick={handleAddClick} className="action-button">Add</Button>
+      </div>
+      <Button onClick={() => setShowCreateCreator(true)} className="action-button">Add a new creator</Button>
       {isConfirmationDialogOpen && (
         <Dialog open={isConfirmationDialogOpen} onOpenChange={() => setIsConfirmationDialogOpen(false)}>
           <DialogOverlay className="dialog-overlay" />
@@ -183,8 +150,8 @@ const Home = () => {
               Are you sure you want to overwrite the existing {platformToOverwrite} handle for this creator?
             </div>
             <div className="dialog-actions">
-              <button onClick={handleConfirmationDialogClose} className="dialog-button">Cancel</button>
-              <button onClick={handleConfirmationDialogConfirm} className="dialog-button dialog-button-confirm">Confirm</button>
+              <Button onClick={handleConfirmationDialogClose} className="dialog-button">Cancel</Button>
+              <Button onClick={handleConfirmationDialogConfirm} className="dialog-button dialog-button-confirm">Confirm</Button>
             </div>
           </DialogContent>
         </Dialog>

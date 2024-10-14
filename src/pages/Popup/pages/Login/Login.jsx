@@ -5,6 +5,7 @@ import ApiClient from '../../../../lib/api/apiclient';
 import { useAuth } from '../../../../lib/auth/AuthContextProvider';
 import { useGlobalState } from '../../../../lib/state/GlobalStateProvider';
 import { fetchCreators } from '../../helpers/fetchcreators';
+import Button from '../../../../components/common/basics/button';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -73,9 +74,9 @@ const Login = () => {
           />
         </div>
         {error && <div className="Login-error">{error}</div>}
-        <button type="submit" className="Login-button">
+        <Button type="submit" className="Login-button">
           Login
-        </button>
+        </Button>
       </form>
     </div>
   );

@@ -1,0 +1,82 @@
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .button.normal {
+    background-color: #041023;
+    color: white;
+    border: none;
+  }
+  
+  .button.outline {
+    background-color: white;
+    color: #333;
+    border: 1px solid #ccc;
+  }
+  
+  .button.soft {
+    background-color: #e5e7eb;
+    color: #333;
+    border: none;
+  }
+  
+  .button.link {
+    background-color: transparent;
+    color: #3b82f6;
+    padding: 0;
+    text-decoration: none;
+  }
+  
+  .button.theme { /* Add theme-specific styles */ }
+  .button.dark { background-color: #1f2937; color: white; }
+  .button.light { background-color: #f3f4f6; color: #333; }
+  
+  .button.xs { padding: 4px 8px; font-size: 12px; }
+  .button.sm { padding: 6px 12px; font-size: 13px; }
+  .button.md { padding: 8px 16px; font-size: 14px; }
+  .button.lg { padding: 10px 20px; font-size: 16px; }
+  
+  .button:hover:not(.disabled) {
+    opacity: 0.9;
+  }
+  
+  .button.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
+  .loading-icon {
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+    width: 16px;
+    height: 16px;
+  }
+  
+  .loading-circle {
+    opacity: 0.25;
+    stroke: currentColor;
+    stroke-width: 4;
+    fill: none;
+  }
+  
+  .loading-path {
+    opacity: 0.75;
+    fill: currentColor;
+  }
+  
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  
+  .button-text {
+    position: relative;
+  }
