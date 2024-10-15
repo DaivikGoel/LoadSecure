@@ -46,7 +46,7 @@ const Login = () => {
     <div className="Login-container">
       <div className="Login-header">
         <img src={logo} className="Login-logo" alt="Superstar Icon" />
-        <h2 className="Login-title">Login to Your Superstar Account</h2>
+        <h2 className="Login-title">Login to Superstar</h2>
       </div>
       <form className="Login-form" onSubmit={handleSubmit}>
         <div className="Login-input-container">

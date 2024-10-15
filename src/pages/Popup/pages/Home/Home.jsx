@@ -123,10 +123,11 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <img src={wordmark} alt="Wordmark" style={{ width: '60%', marginBottom: '10px' }} />
-      <h1>Welcome {user.firstName}</h1>
-      <h2>Creator</h2>
+      <img src={wordmark} alt="Wordmark" style={{ width: '60%' }} />
+  
+      <h1> Current Creator</h1>
       <div className="creator-info">
+      
         <span className="creator-name">{getPlatformIcon()}{currentCreator}</span>
         <span className="creator-platform">{currentCreatorPlatform}</span>
       </div>
