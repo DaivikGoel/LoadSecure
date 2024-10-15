@@ -1,0 +1,71 @@
+.country-select-container {
+    font-family: Arial, sans-serif;
+    margin-bottom: 15px;
+  }
+  
+  .country-select-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  .country-select-input {
+    position: relative;
+  }
+  
+  .country-select-value {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .country-select-value.disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+  }
+  
+  .country-select-value .placeholder {
+    color: #999;
+  }
+  
+  .country-select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  
+  .country-select-option {
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .country-select-option:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .country-select-value span,
+  .country-select-option span {
+    margin-left: 8px;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+  }

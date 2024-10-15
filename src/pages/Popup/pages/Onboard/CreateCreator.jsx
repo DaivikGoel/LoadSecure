@@ -4,7 +4,7 @@ import { useGlobalState } from '../../../../lib/state/GlobalStateProvider';
 import ApiClient from '../../../../lib/api/apiclient';
 import wordmark from '../../../../assets/img/wordmark.png';
 import Button from '../../../../components/common/basics/button';
-
+import CountrySelectInput from '../../../../components/common/forms/CountrySelectInput';
 const CreateCreator = ({ onBack }) => {
 
   const [creatorName, setCreatorName] = useState('');
@@ -50,7 +50,7 @@ const CreateCreator = ({ onBack }) => {
   return (
     <div className="create-creator-container">
       <img src={wordmark} alt="Wordmark" style={{ width: '60%', marginBottom: '10px' }} />
-      <h1>Add creators</h1>
+      <h1>Add creator</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="creatorName">Creator Name</label>
@@ -89,20 +89,13 @@ const CreateCreator = ({ onBack }) => {
             onChange={(e) => setTiktokLink(e.target.value)}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="countries">What countries is this creator associated with?</label>
-          <select
-            id="countries"
-            multiple
-            value={countries}
-            onChange={(e) => setCountries(Array.from(e.target.selectedOptions, option => option.value))}
-          >
-            <option value="US">United States</option>
-            <option value="UK">United Kingdom</option>
-            <option value="CA">Canada</option>
-            {/* Add more country options as needed */}
-          </select>
-        </div>
+        <CountrySelectInput
+  label="What countries is this creator associated with?"
+  onChange={(selectedCountries) => setCountries(selectedCountries)}
+  initialSelectedValues={countries}
+  isInvalid={false}
+  errorMessage=""
+  />
         <Button type="submit" className="action-button">Submit</Button>
       </form>
       <Button onClick={onBack} className="back-button">Back</Button>
