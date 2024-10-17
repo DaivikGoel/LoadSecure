@@ -1,0 +1,41 @@
+.metric-item {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .metric-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .metric-icon {
+    font-size: 20px;
+    margin-right: 10px;
+  }
+  
+  .metric-value {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .metric-growth {
+    margin-left: auto;
+    font-size: 14px;
+  }
+  
+  .metric-growth.positive {
+    color: green;
+  }
+  
+  .metric-growth.negative {
+    color: red;
+  }
+  
+  .metric-label {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+  }

@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import ApiClient from '../api/apiclient'; // Adjust this import path as necessary
+import ApiClient from '../api/apiclient';
 
 const AuthContext = createContext(null);
 
@@ -18,7 +18,6 @@ export const AuthContextProvider = ({ children }) => {
           setUser(response.data);
         } catch (error) {
           console.error('Failed to fetch user data:', error);
-          // If fetching user data fails, we might want to log the user out
           logout();
         }
       }
@@ -26,9 +25,6 @@ export const AuthContextProvider = ({ children }) => {
     };
 
     checkLoggedIn();
-    window.addEventListener('storage', checkLoggedIn);
-
-    return () => window.removeEventListener('storage', checkLoggedIn);
   }, []);
 
   const login = (token, userData) => {
@@ -44,7 +40,7 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // Or any loading indicator you prefer
+    return <div>Loading...</div>;
   }
 
   return (

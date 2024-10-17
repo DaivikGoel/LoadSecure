@@ -4,7 +4,7 @@ import logo from '../../../../assets/img/superstar-icon.png';
 import ApiClient from '../../../../lib/api/apiclient';
 import { useAuth } from '../../../../lib/auth/AuthContextProvider';
 import { useGlobalState } from '../../../../lib/state/GlobalStateProvider';
-import { fetchCreators } from '../../helpers/fetchcreators';
+import { fetchCreators } from '../../../../lib/api/fetchcreators';
 import Button from '../../../../components/common/basics/button';
 
 const Login = () => {
@@ -12,7 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const { login } = useAuth();
-  const { setSelectedBusiness, setBusinessCreators } = useGlobalState();
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -23,15 +23,13 @@ const Login = () => {
         email,
         password,
       });
-      
+
       const profileResponse = await ApiClient.get('/v1/users/profile');
-      
+
       login(loginResponse.data.token, profileResponse.data);
-      setSelectedBusiness(profileResponse.data.primaryBusiness);
-      
-      const creators = await fetchCreators(profileResponse.data.primaryBusiness.id);
-      setBusinessCreators(creators);
-      
+
+     
+
       console.log('Login successful!');
     } catch (error) {
       if (error.response) {

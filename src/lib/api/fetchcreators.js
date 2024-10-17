@@ -1,4 +1,4 @@
-import ApiClient from '../../../lib/api/apiclient';
+import ApiClient from './apiclient';
 
 export const fetchCreators = async (businessId) => {
   try {

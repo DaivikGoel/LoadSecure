@@ -1,0 +1,45 @@
+#superstar-side-panel-container {
+    position: fixed;
+    top: 10vh;
+    right: 0;
+    height:50vh;
+    z-index: 9999;
+    transition: width 0.3s ease-in-out;
+  }
+  
+  #superstar-side-panel-container.open {
+    width: 300px;
+  }
+  
+  #superstar-side-panel-container.closed {
+    width: 10px;
+    height: 40px
+  }
+  
+  .superstar-side-panel {
+    height: 100%;
+    background-color: white;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+  }
+  
+  .superstar-toggle-button {
+    position: absolute;
+    top: 50%;
+    left: -20px;
+    transform: translateY(-50%);
+    background-color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .superstar-panel-content {
+    padding: 20px;
+  }
