@@ -6,6 +6,7 @@ import { useAuth } from '../../../../lib/auth/AuthContextProvider';
 import { useGlobalState } from '../../../../lib/state/GlobalStateProvider';
 import { fetchCreators } from '../../../../lib/api/fetchcreators';
 import Button from '../../../../components/common/basics/button';
+import { Icon } from '../../../../components/common/logos';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -43,7 +44,9 @@ const Login = () => {
   return (
     <div className="Login-container">
       <div className="Login-header">
-        <img src={logo} className="Login-logo" alt="Superstar Icon" />
+      <div className="Login-logo-container">
+          <Icon />
+        </div>
         <h2 className="Login-title">Login to Superstar</h2>
       </div>
       <form className="Login-form" onSubmit={handleSubmit}>

@@ -8,9 +8,10 @@ import CreatorCard from '../../../../components/common/CreatorCard';
 import MetricItem from '../../../../components/common/MetricItem';
 import Divider from '../../../../components/common/Divider';
 import CreateCreator from '../Onboard/CreateCreator';
+import { Wordmark } from '../../../../components/common/logos';
 
 const Home = () => {
-  const wordmark = getAssetUrl('../../../../assets/img/wordmark.png');
+
   const { currentCreator, currentCreatorPlatform, selectedBusiness } = useGlobalState();
   const { logout } = useAuth();
   const [showCreateCreator, setShowCreateCreator] = useState(false);
@@ -29,7 +30,9 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="header">
-        <img src={wordmark} alt="Wordmark" style={{ width: '60%' }} />
+      <div className="wordmark-container">
+          <Wordmark />
+        </div>
         <Button onClick={handleLogout} className="logout-button">Logout</Button>
       </div>
       

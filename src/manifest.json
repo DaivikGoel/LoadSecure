@@ -19,7 +19,7 @@
   "content_scripts": [
     {
       "matches": [
-        "<all_urls>"
+"<all_urls>"
       ],
       "js": [
         "contentScript.bundle.js"
@@ -33,13 +33,17 @@
   "web_accessible_resources": [
     {
       "resources": [
+
         "content.styles.css",
         "icon-128.png",
         "icon-34.png",
-        "superstar-icon.png",
+        "assets/img/*",
+      "superstar-icon.png",
         "wordmark.png"
       ],
-      "matches": []
+      "matches": [
+"<all_urls>"
+      ]
     }
   ]
 }
