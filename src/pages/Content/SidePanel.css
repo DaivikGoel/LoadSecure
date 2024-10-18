@@ -1,8 +1,9 @@
 #superstar-side-panel-container {
     position: fixed;
     top: 10vh;
+    bottom:10vh;
     right: 0;
-    height:50vh;
+    height:80vh;
     z-index: 9999;
     transition: width 0.3s ease-in-out;
   }
@@ -41,5 +42,20 @@
   }
   
   .superstar-panel-content {
-    padding: 20px;
+    flex: 1;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    height: 100%;
+  }
+  
+  /* Force Popup content to be scrollable */
+  .superstar-panel-content > div,
+  .superstar-panel-content .App {
+    height: 96%;
+    overflow-y: auto;
+  }
+  
+  /* Ensure all content within is not restricting height */
+  .superstar-panel-content * {
+    max-height: none !important;
   }

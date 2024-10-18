@@ -69,3 +69,13 @@ input, select {
   font-size: 14px;
   margin-top: 10px;
 }
+
+.wordmark-container {
+  width: 120px; /* Adjust this value to fit your needs */
+  height: auto;
+}
+
+.wordmark-container img {
+  width: 100%;
+  height: auto;
+}

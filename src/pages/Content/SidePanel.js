@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Popup from '../Popup/Popup'; // Import your existing Popup component
+import Popup from '../Popup/Popup';
 import { AuthContextProvider } from '../../lib/auth/AuthContextProvider';
 import { GlobalStateProvider } from '../../lib/state/GlobalStateProvider';
 

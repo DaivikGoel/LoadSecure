@@ -7,6 +7,7 @@ import Button from '../../../../components/common/basics/button';
 import CountrySelectInput from '../../../../components/common/forms/CountrySelectInput';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { fetchCreators } from '../../../../lib/api/fetchcreators';
+import { Wordmark } from '../../../../components/common/logos';
 
 const CreateCreator = ({ onBack }) => {
   const [creatorName, setCreatorName] = useState('');
@@ -81,7 +82,10 @@ const CreateCreator = ({ onBack }) => {
 
   return (
     <div className="create-creator-container">
-      <img src={wordmark} alt="Wordmark" style={{ width: '60%', marginBottom: '10px' }} />
+
+  <div className="wordmark-container">
+          <Wordmark />
+        </div>
       <h1>Add creator</h1>
       <form onSubmit={handleSubmit}>
         <div className="card">
