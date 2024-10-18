@@ -3,6 +3,8 @@ import './CreatorCard.css';
 import Button from './basics/button';
 import Divider from './Divider';
 import PlusSquare from '@untitled-ui/icons-react/build/esm/PlusSquare';
+import PlayCircle from '@untitled-ui/icons-react/build/esm/PlayCircle';
+import Building06 from '@untitled-ui/icons-react/build/esm/Building06';
 
 const CreatorCard = ({ creator, onSave }) => {
   return (
@@ -15,7 +17,10 @@ const CreatorCard = ({ creator, onSave }) => {
       </div>
       <div className="creator-labels">
         <div className="label-group">
-          <span className="label">Content</span>
+          <span className="label primary-label">
+            <PlayCircle className="primary-label-icon" />
+            Content
+          </span>
           {creator.categories.map((category, index) => (
             <span key={index} className="label">
               {category}
@@ -23,7 +28,10 @@ const CreatorCard = ({ creator, onSave }) => {
           ))}
         </div>
         <div className="label-group">
-          <span className="label">Industries</span>
+          <span className="label primary-label">
+            <Building06 className="primary-label-icon" />
+            Industry
+          </span>
           {creator.industries.map((industry, index) => (
             <span key={index} className="label">
               {industry}
